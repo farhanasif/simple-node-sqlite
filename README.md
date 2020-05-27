@@ -9,7 +9,7 @@ Clone the project and in the project directory, you can run:
 Runs the app in the development mode.<br />
 Open [http://localhost:8000](http://localhost:8000) to view it in the browser.
 
-The following API is used for testing
+The following API is used for testing<br />
 GET http://localhost:8000/books
 -- this provides list of books
 POST http://localhost:8000/book
