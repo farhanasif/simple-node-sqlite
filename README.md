@@ -10,9 +10,9 @@ Runs the app in the development mode.<br />
 Open [http://localhost:8000](http://localhost:8000) to view it in the browser.
 
 The following API is used for testing<br />
-GET http://localhost:8000/books
--- this provides list of books
-POST http://localhost:8000/book
--- This API is used for insert data, sample JSON : {"title": "A Beautiful Mind"}
-DELETE http://localhost:8000/book/:id
--- This API is used to delete book
+GET http://localhost:8000/books<br />
+-- this provides list of books<br />
+POST http://localhost:8000/book<br />
+-- This API is used for insert data,<br /> sample JSON : {"title": "A Beautiful Mind"}<br />
+DELETE http://localhost:8000/book/:id<br />
+-- This API is used to delete book<br />
