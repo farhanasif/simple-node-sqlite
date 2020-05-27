@@ -45,6 +45,47 @@ app.get("/books", (req, res, next) => {
       });
 });
 
+app.post("/book", (req, res) => {
+  var errors = [];
+  if (!req.body.title) {
+    errors.push("No title specified");
+  }
+  if (errors.length){
+        res.status(400).json({"error":errors.join(",")});
+        return;
+    }
+    var data = {
+        title: req.body.title
+    }
+    var sql ='INSERT INTO books (title) VALUES (?)'
+    var params =[data.title]
+    db.run(sql, params, function (err, result) {
+        if (err){
+            res.status(400).json({"error": err.message})
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": data,
+            "id" : this.lastID
+        })
+    });
+  //res.json({ message: "Ok" });
+});
+
+app.delete("/book/:id", (req, res, next) => {
+    db.run(
+        'DELETE FROM books WHERE id = ?',
+        req.params.id,
+        function (err, result) {
+            if (err){
+                res.status(400).json({"error": res.message})
+                return;
+            }
+            res.json({"message":"deleted", changes: this.changes})
+    });
+})
+
 // Insert here other API endpoints
 
 // Default response for any other request
