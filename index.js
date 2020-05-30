@@ -143,7 +143,35 @@ app.post("/publication", (req, res) => {
         })
     });
     //res.json({ message: "Ok" });
-  });
+});
+
+app.post("/publication/:id", (req, res) => {
+    var data = {
+        title: req.body.title,
+        author: req.body.author,
+        category: req.body.category,
+        price : req.body.price
+    }
+    db.run(
+        `UPDATE publications set 
+           title = COALESCE(?,title), 
+           author = COALESCE(?,author), 
+           category = COALESCE(?, category),
+           price = COALESCE(?, price) 
+           WHERE id = ?`,
+        [data.title, data.author, data.category, data.price, req.params.id],
+        function (err, result) {
+            if (err){
+                res.status(400).json({"error": res.message})
+                return;
+            }
+            res.json({
+                message: "success",
+                data: data,
+                changes: this.changes
+            })
+    });
+})
 
 app.delete("/publication/:id", (req, res, next) => {
     db.run(
@@ -162,5 +190,6 @@ app.delete("/publication/:id", (req, res, next) => {
 
 // Default response for any other request
 app.use(function(req, res){
+    console.log('here')
     res.status(404);
 });
