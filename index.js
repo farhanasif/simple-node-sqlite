@@ -86,6 +86,8 @@ app.delete("/book/:id", (req, res, next) => {
     });
 });
 
+///-----------------------publications API development-----------------------//
+
 app.get("/publications", (req, res, next) => {
     var sql = "select * from publications"
     var params = []
@@ -99,6 +101,61 @@ app.get("/publications", (req, res, next) => {
             "data":rows
         })
       });
+});
+
+app.post("/publication", (req, res) => {
+    var errors = [];
+    
+    if (!req.body.title) {
+      errors.push("No title specified");
+    }
+    if (!req.body.author) {
+      errors.push("No author specified");
+    }
+    if (!req.body.category) {
+      errors.push("No category specified");
+    }
+    if (!req.body.price) {
+      errors.push("No price specified");
+    }
+    if (errors.length){
+        res.status(400).json({"error":errors.join(",")});
+        return;
+    }
+    console.log(req.body.author);
+    var data = {
+        title: req.body.title,
+        author: req.body.author,
+        category: req.body.category,
+        price: req.body.price
+    }
+    var sql ='INSERT INTO publications (title, author, category, price) VALUES (?,?,?,?)'
+    var params =[data.title, data.author, data.category, data.price]
+    db.run(sql, params, function (err, result) {
+        if (err){
+            res.status(400).json({"error": err.message})
+            return;
+        }
+        res.json({
+            "message": "success",
+            "data": data,
+            "id" : this.lastID
+        })
+    });
+    //res.json({ message: "Ok" });
+  });
+
+app.delete("/publication/:id", (req, res, next) => {
+    db.run(
+        'DELETE FROM publications WHERE id = ?',
+        req.params.id,
+        function (err, result) {
+            if (err){
+                res.status(400).json({"error": res.message})
+                return;
+            }
+            res.json({"message":"deleted", changes: this.changes})
+    });
 });
 
 // Insert here other API endpoints
