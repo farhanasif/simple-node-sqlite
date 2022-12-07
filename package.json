@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/farhanasif/simple-node-sqlite#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.18.2",
     "sqlite3": "^4.2.0"
   }
 }
